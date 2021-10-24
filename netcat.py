@@ -7,6 +7,12 @@ import textwrap
 import threading
 
 
+def execute(cmd):
+    cmd = cmd.strip()
+    output = subprocess.check_output(shlex.split(cmd),
+                                     stderr=subprocess.STDOUT)
+    
+    return output.decode()
 
 
 class NetCat:
@@ -15,14 +21,6 @@ class NetCat:
         self.buffer = buffer
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-    def execute(cmd):
-        cmd = cmd.strip()
-        output = subprocess.check_output(shlex.split(cmd),
-                                        stderr=subprocess.STDOUT)
-
-        return output.decode()
-
 
     def run(self):
         if self.args.listen:
